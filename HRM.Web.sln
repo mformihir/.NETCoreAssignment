@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRM.Web", "HRM.Web\HRM.Web.csproj", "{6582E6D6-2167-43FA-A6F4-376D1E0EB792}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRM.Business", "HRM.Business\HRM.Business.csproj", "{CD7A1E8D-A5F9-4123-B05A-153E6BE2C899}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRM.Data", "HRM.Data\HRM.Data.csproj", "{31ECFDB5-C583-4833-8C43-325BD1D6866A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6582E6D6-2167-43FA-A6F4-376D1E0EB792}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6582E6D6-2167-43FA-A6F4-376D1E0EB792}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6582E6D6-2167-43FA-A6F4-376D1E0EB792}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6582E6D6-2167-43FA-A6F4-376D1E0EB792}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD7A1E8D-A5F9-4123-B05A-153E6BE2C899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD7A1E8D-A5F9-4123-B05A-153E6BE2C899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD7A1E8D-A5F9-4123-B05A-153E6BE2C899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD7A1E8D-A5F9-4123-B05A-153E6BE2C899}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31ECFDB5-C583-4833-8C43-325BD1D6866A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31ECFDB5-C583-4833-8C43-325BD1D6866A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31ECFDB5-C583-4833-8C43-325BD1D6866A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31ECFDB5-C583-4833-8C43-325BD1D6866A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2DB49D89-02A5-423F-B53D-B78A9C6BB899}
+	EndGlobalSection
+EndGlobal
