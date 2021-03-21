@@ -37,6 +37,8 @@ namespace HRM.Data.Context
             {
                 entity.ToTable("Department");
 
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(30);
@@ -45,8 +47,6 @@ namespace HRM.Data.Context
             modelBuilder.Entity<Employee>(entity =>
             {
                 entity.ToTable("Employee");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
