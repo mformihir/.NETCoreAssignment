@@ -33,12 +33,12 @@ namespace HRM.Data.Repository
             }
         }
 
-        public Employee Get(int id)
+        public Employee GetEmployee(int id)
         {
-            return _context.Employees.Find(id);
+            return _context.Employees.Include(e => e.Department).Include(e => e.Manager).Where(e => e.Id == id).FirstOrDefault();
         }
 
-        public List<Employee> Get()
+        public List<Employee> GetEmployees()
         {
             var employees = _context.Employees.Include(e => e.Department).Include(e => e.Manager);
             return employees.ToList();

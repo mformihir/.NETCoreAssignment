@@ -31,24 +31,22 @@ namespace HRM.Web.Controllers
         }
 
         // GET: Employees/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var employee = await _context.Employees
-        //        .Include(e => e.Department)
-        //        .Include(e => e.Manager)
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (employee == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var employee = _employeeManager.GetEmployee((int)id);
 
-        //    return View(employee);
-        //}
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            return View(employee);
+        }
 
         public IActionResult Create()
         {

@@ -5,8 +5,8 @@ namespace HRM.Data.Interface
 {
     public interface IEmployeeRepository
     {
-        Employee Get(int id);
-        List<Employee> Get();
+        Employee GetEmployee(int id);
+        List<Employee> GetEmployees();
         string CreateEmployee(Employee employee);
     }
 }

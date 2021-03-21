@@ -7,7 +7,7 @@ namespace HRM.Business.Interface
 {
     public interface IEmployeeManager
     {
-        EmployeeBusinessModel Get(int id);
+        EmployeeBusinessModel GetEmployee(int id);
         List<EmployeeBusinessModel> GetEmployees();
         public string CreateEmployee(EmployeeBusinessModel employee);
     }
