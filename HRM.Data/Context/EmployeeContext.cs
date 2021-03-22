@@ -25,7 +25,7 @@ namespace HRM.Data.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=HRM.Employee;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Server=DSK-754\\SQL2019;Database=HRM.Employee;Integrated Security=True");
             }
         }
 
