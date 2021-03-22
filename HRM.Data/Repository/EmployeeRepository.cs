@@ -2,6 +2,7 @@
 using HRM.Data.Interface;
 using HRM.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,22 +14,26 @@ namespace HRM.Data.Repository
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly EmployeeContext _context;
+        private readonly ILogger<EmployeeRepository> _logger;
 
-        public EmployeeRepository(EmployeeContext context)
+        public EmployeeRepository(EmployeeContext context, ILogger<EmployeeRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public string CreateEmployee(Employee employee)
         {
             try
             {
+                _logger.LogInformation("This is repository");
                 _context.Add(employee);
                 _context.SaveChanges();
                 return "Success";
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogCritical(e.Message);
                 return "Error Occurred";
             }
         }
@@ -59,8 +64,9 @@ namespace HRM.Data.Repository
                 _context.SaveChanges();
                 return "Success";
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogCritical(e.Message);
                 return "Error occurred";
             }
         }
@@ -78,26 +84,51 @@ namespace HRM.Data.Repository
                 _context.SaveChanges();
                 return "Success";
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogCritical(e.Message);
                 return "Error occured";
             }
         }
 
         public Employee GetEmployee(int id)
         {
-            return _context.Employees.Include(e => e.Department).Include(e => e.Manager).Where(e => e.Id == id).FirstOrDefault();
+            try
+            {
+                return _context.Employees.Include(e => e.Department).Include(e => e.Manager).Where(e => e.Id == id).FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical(e.Message);
+                return null;
+            }
         }
         public List<Employee> GetEmployees()
         {
-            var employees = _context.Employees.Include(e => e.Department).Include(e => e.Manager);
-            return employees.ToList();
+            try
+            {
+                var employees = _context.Employees.Include(e => e.Department).Include(e => e.Manager);
+                return employees.ToList();
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical(e.Message);
+                return null;
+            }
         }
 
         public List<Employee> GetManagers(int deptId)
         {
-            var managers = _context.Employees.Where(e => e.DepartmentId == deptId && e.IsManager == true).ToList();
-            return managers;
+            try
+            {
+                var managers = _context.Employees.Where(e => e.DepartmentId == deptId && e.IsManager == true).ToList();
+                return managers;
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical(e.Message);
+                return null;
+            }
         }
     }
 }

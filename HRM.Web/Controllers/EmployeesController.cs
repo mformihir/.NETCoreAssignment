@@ -71,6 +71,7 @@ namespace HRM.Web.Controllers
             return View(employee);
         }
 
+        [AllowAnonymous]
         public JsonResult GetManagers(int deptId)
         {
             return Json(_employeeManager.GetManagers(deptId));
