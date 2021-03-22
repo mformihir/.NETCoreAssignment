@@ -37,6 +37,30 @@ namespace HRM.Business.Manager
             return _employeeRepository.CreateEmployee(employee);
         }
 
+        public string UpdateEmployee(int id, EmployeeBusinessModel employeeViewModel)
+        {
+            var employeeToDb = new Employee();
+            employeeToDb.Id = id;
+            employeeToDb.Name = employeeViewModel.Name;
+            employeeToDb.Phone = employeeViewModel.Phone;
+            employeeToDb.Salary = employeeViewModel.Salary;
+            employeeToDb.Email = employeeViewModel.Email;
+            employeeToDb.IsManager = employeeViewModel.IsManager;
+            if (!employeeViewModel.IsManager) //If employee is not a Manager, it must have a ManagerId
+            {
+                employeeToDb.ManagerId = employeeViewModel.ManagerId;
+            }
+            employeeToDb.DepartmentId = employeeViewModel.DepartmentId;
+            employeeToDb.UpdatedDate = DateTime.UtcNow;
+            employeeToDb.UpdatedBy = 1; //TODO: Get loggedInUserId for employee.CreatedBy
+            return _employeeRepository.UpdateEmployee(employeeToDb);
+        }
+
+        public string DeleteEmployee(int id)
+        {
+            return _employeeRepository.DeleteEmployee(id);
+        }
+
         public EmployeeBusinessModel GetEmployee(int id)
         {
             var employeeFromDb = _employeeRepository.GetEmployee(id);
@@ -46,10 +70,12 @@ namespace HRM.Business.Manager
                 employee.Id = employeeFromDb.Id;
                 employee.Name = employeeFromDb.Name;
                 employee.Department = employeeFromDb.Department.Name;
+                employee.DepartmentId = employeeFromDb.Department.Id;
                 employee.Email = employeeFromDb.Email;
                 employee.IsManager = employeeFromDb.IsManager;
                 if (employeeFromDb.ManagerId != null)
                 {
+                    employee.ManagerId = (int)employeeFromDb.ManagerId;
                     employee.Manager = employeeFromDb.Manager.Name;
                 }
                 employee.Phone = employeeFromDb.Phone;
@@ -80,6 +106,17 @@ namespace HRM.Business.Manager
                 employeesBusinessModel.Add(employeeBusinessModel);
             }
             return employeesBusinessModel;
+        }
+
+        public Dictionary<int, string> GetManagers(int deptId)
+        {
+            var managersFromDb = _employeeRepository.GetManagers(deptId);
+            var managers = new Dictionary<int, string>();
+            foreach (var manager in managersFromDb)
+            {
+                managers.Add(manager.Id, manager.Name);
+            }
+            return managers;
         }
     }
 }

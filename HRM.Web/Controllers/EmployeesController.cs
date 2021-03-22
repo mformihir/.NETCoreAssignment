@@ -9,9 +9,11 @@ using HRM.Data.Context;
 using HRM.Data.Models;
 using HRM.Business.Interface;
 using HRM.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HRM.Web.Controllers
 {
+    [Authorize]
     public class EmployeesController : Controller
     {
         private readonly IEmployeeManager _employeeManager;
@@ -23,14 +25,12 @@ namespace HRM.Web.Controllers
             _departmentManager = departmentManager;
         }
 
-        // GET: Employees
         public IActionResult Index()
         {
             var employees = _employeeManager.GetEmployees();
             return View(employees);
         }
 
-        // GET: Employees/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -51,13 +51,9 @@ namespace HRM.Web.Controllers
         public IActionResult Create()
         {
             ViewData["DepartmentId"] = new SelectList(_departmentManager.GetDepartments(), "Id", "Name");
-            ViewData["ManagerId"] = new SelectList(_employeeManager.GetEmployees(), "Id", "Name");
             return View();
         }
 
-        // POST: Employees/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Name,DepartmentId,Salary,IsManager,ManagerId,Phone,Email")] EmployeeBusinessModel employee)
@@ -72,99 +68,68 @@ namespace HRM.Web.Controllers
                 return RedirectToAction("Error", "Home");
             }
             ViewData["DepartmentId"] = new SelectList(_departmentManager.GetDepartments(), "Id", "Name", employee.DepartmentId);
-            ViewData["ManagerId"] = new SelectList(_employeeManager.GetEmployees(), "Id", "Name", employee.ManagerId);
             return View(employee);
         }
 
-        // GET: Employees/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public JsonResult GetManagers(int deptId)
+        {
+            return Json(_employeeManager.GetManagers(deptId));
+        }
 
-        //    var employee = await _context.Employees.FindAsync(id);
-        //    if (employee == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name", employee.DepartmentId);
-        //    ViewData["ManagerId"] = new SelectList(_context.Employees, "Id", "Email", employee.ManagerId);
-        //    return View(employee);
-        //}
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        // POST: Employees/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,Name,DepartmentId,Salary,IsManager,ManagerId,Phone,Email,CreatedDate,UpdatedDate,CreatedBy,UpdatedBy,IsActive")] Employee employee)
-        //{
-        //    if (id != employee.Id)
-        //    {
-        //        return NotFound();
-        //    }
+            var employee = _employeeManager.GetEmployee((int)id);
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(employee);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!EmployeeExists(employee.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name", employee.DepartmentId);
-        //    ViewData["ManagerId"] = new SelectList(_context.Employees, "Id", "Email", employee.ManagerId);
-        //    return View(employee);
-        //}
+            if (employee == null)
+            {
+                return NotFound();
+            }
 
-        // GET: Employees/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+            ViewBag.DepartmentId = new SelectList(_departmentManager.GetDepartments(), "Id", "Name", employee.DepartmentId);
+            ViewBag.ManagerId = new SelectList(_employeeManager.GetManagers(deptId: employee.DepartmentId), "Key", "Value", employee.ManagerId);
+            return View(employee);
+        }
 
-        //    var employee = await _context.Employees
-        //        .Include(e => e.Department)
-        //        .Include(e => e.Manager)
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (employee == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, [Bind("Id,Name,DepartmentId,Salary,IsManager,ManagerId,Phone,Email")] EmployeeBusinessModel employee)
+        {
+            if (id != employee.Id)
+            {
+                return NotFound();
+            }
 
-        //    return View(employee);
-        //}
+            if (ModelState.IsValid)
+            {
+                var result = _employeeManager.UpdateEmployee(id, employee);
+                return RedirectToAction(nameof(Index));
+            }
 
-        // POST: Employees/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var employee = await _context.Employees.FindAsync(id);
-        //    _context.Employees.Remove(employee);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            ViewBag.DepartmentId = new SelectList(_departmentManager.GetDepartments(), "Id", "Name", employee.DepartmentId);
+            ViewBag.ManagerId = new SelectList(_employeeManager.GetManagers(deptId: employee.DepartmentId), "Key", "Value", employee.ManagerId);
+            return View(employee);
+        }
 
-        //private bool EmployeeExists(int id)
-        //{
-        //    return _context.Employees.Any(e => e.Id == id);
-        //}
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var result = _employeeManager.DeleteEmployee((int)id);
+
+            if (result == "Not found")
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

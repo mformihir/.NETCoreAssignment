@@ -1,4 +1,4 @@
-﻿@model HRM.Data.Models.Employee
+﻿@model HRM.Business.Models.EmployeeBusinessModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,7 +6,6 @@
 
 <h1>Edit</h1>
 
-<h4>Employee</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,7 +19,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="DepartmentId" class="control-label"></label>
-                <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId"></select>
+                <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.DepartmentId">
+                    <option value="0" disabled> Select</option>
+                </select>
                 <span asp-validation-for="DepartmentId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -35,7 +36,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="ManagerId" class="control-label"></label>
-                <select asp-for="ManagerId" class="form-control" asp-items="ViewBag.ManagerId"></select>
+                <select asp-for="ManagerId" class="form-control" asp-items="ViewBag.ManagerId">
+                    @*<select asp-for="ManagerId" class="form-control">
+                        @foreach (var item in ViewBag.ManagerId)
+                        {
+                            <option value="@item.Id"> @item.Name </option>
+                        }*@
+                    <option value="-1" disabled> Select</option>
+                </select>
                 <span asp-validation-for="ManagerId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -47,31 +55,6 @@
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedDate" class="control-label"></label>
-                <input asp-for="UpdatedDate" class="form-control" />
-                <span asp-validation-for="UpdatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedBy" class="control-label"></label>
-                <input asp-for="CreatedBy" class="form-control" />
-                <span asp-validation-for="CreatedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedBy" class="control-label"></label>
-                <input asp-for="UpdatedBy" class="form-control" />
-                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                </label>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -86,4 +69,40 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(function () {
+            if ($("#IsManager").is(":checked")) {
+                $("#ManagerId").attr("disabled", "disabled");
+            }
+
+            $("#DepartmentId").change(function () {
+                var deptId = $(this).val();
+                var url = "/Employees/GetManagers";
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: "deptId=" + deptId,
+                    success: function (data) {
+                        var s = '';
+                        s += '<option value="0" selected disabled> Select</option>';
+                        $.each(data, function (i, n) {
+                            s += '<option value="' + i + '">' + n + '</option>';
+                        });
+
+                        $("#ManagerId").html(s);
+                    }
+                });
+            });
+
+
+            $("#IsManager").click(function () {
+                if ($(this).is(":checked")) {
+                    $("#ManagerId").attr("disabled", "disabled");
+                } else {
+                    $("#ManagerId").removeAttr("disabled");
+                    $("#ManagerId").focus();
+                }
+            });
+        });
+    </script>
 }

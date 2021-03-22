@@ -9,6 +9,9 @@ namespace HRM.Business.Interface
     {
         EmployeeBusinessModel GetEmployee(int id);
         List<EmployeeBusinessModel> GetEmployees();
-        public string CreateEmployee(EmployeeBusinessModel employee);
+        string CreateEmployee(EmployeeBusinessModel employee);
+        Dictionary<int, string> GetManagers(int deptId);
+        string UpdateEmployee(int id, EmployeeBusinessModel employee);
+        string DeleteEmployee(int id);
     }
 }

@@ -8,5 +8,8 @@ namespace HRM.Data.Interface
         Employee GetEmployee(int id);
         List<Employee> GetEmployees();
         string CreateEmployee(Employee employee);
+        List<Employee> GetManagers(int deptId);
+        string UpdateEmployee(Employee employee);
+        string DeleteEmployee(int id);
     }
 }
