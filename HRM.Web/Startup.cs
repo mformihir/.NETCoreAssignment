@@ -26,10 +26,18 @@ namespace HRM.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
             services.AddControllersWithViews();
             services.AddScoped<IEmployeeManager, EmployeeManager>();
             services.AddScoped<IDepartmentManager, DepartmentManager>();
             services.RegisterBusinessServices(Configuration);
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,10 +58,12 @@ namespace HRM.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

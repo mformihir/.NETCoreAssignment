@@ -1,5 +1,6 @@
 ﻿using System;
 using HRM.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -7,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace HRM.Data.Context
 {
-    public partial class EmployeeContext : DbContext
+    public partial class EmployeeContext : IdentityDbContext
     {
         public EmployeeContext()
         {
@@ -31,6 +32,7 @@ namespace HRM.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<Department>(entity =>
@@ -47,6 +49,10 @@ namespace HRM.Data.Context
             modelBuilder.Entity<Employee>(entity =>
             {
                 entity.ToTable("Employee");
+
+                entity.HasIndex(e => e.DepartmentId, "IX_Employee_DepartmentId");
+
+                entity.HasIndex(e => e.ManagerId, "IX_Employee_ManagerId");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 

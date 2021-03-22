@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRM.Data.Migrations
 {
     [DbContext(typeof(EmployeeContext))]
-    [Migration("20210322042614_MakeIdIdentity")]
-    partial class MakeIdIdentity
+    [Migration("20210322051947_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -91,9 +91,9 @@ namespace HRM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex(new[] { "DepartmentId" }, "IX_Employee_DepartmentId");
 
-                    b.HasIndex("ManagerId");
+                    b.HasIndex(new[] { "ManagerId" }, "IX_Employee_ManagerId");
 
                     b.ToTable("Employee");
                 });
