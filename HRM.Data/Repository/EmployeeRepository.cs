@@ -22,11 +22,15 @@ namespace HRM.Data.Repository
             _logger = logger;
         }
 
+        /// <summary>
+        /// Adds the Employee to the database
+        /// </summary>
+        /// <param name="employee">Employee to be created</param>
+        /// <returns>Create Operation Status/Message (string)</returns>
         public string CreateEmployee(Employee employee)
         {
             try
             {
-                _logger.LogInformation("This is repository");
                 _context.Add(employee);
                 _context.SaveChanges();
                 return "Success";
@@ -38,6 +42,11 @@ namespace HRM.Data.Repository
             }
         }
 
+        /// <summary>
+        /// Updates the existing Employee from the database
+        /// </summary>
+        /// <param name="employee">Updated employee object</param>
+        /// <returns>Update Operation Status/Message (string)</returns>
         public string UpdateEmployee(Employee employee)
         {
             var employeeFromDb = _context.Employees.Find(employee.Id);
@@ -71,6 +80,11 @@ namespace HRM.Data.Repository
             }
         }
 
+        /// <summary>
+        /// Deletes the Employee identified by specified id
+        /// </summary>
+        /// <param name="id">id of Employee to delete</param>
+        /// <returns>Delete Operation Status/Message (string)</returns>
         public string DeleteEmployee(int id)
         {
             var employeeFromDb = _context.Employees.Find(id);
@@ -91,6 +105,11 @@ namespace HRM.Data.Repository
             }
         }
 
+        /// <summary>
+        /// Returns the Employee of the specified id from database
+        /// </summary>
+        /// <param name="id">id of Employee to fetch</param>
+        /// <returns>Employee</returns>
         public Employee GetEmployee(int id)
         {
             try
@@ -103,6 +122,11 @@ namespace HRM.Data.Repository
                 return null;
             }
         }
+
+        /// <summary>
+        /// Gets all the Employees from the database
+        /// </summary>
+        /// <returns>Employees</returns>
         public List<Employee> GetEmployees()
         {
             try
@@ -117,6 +141,11 @@ namespace HRM.Data.Repository
             }
         }
 
+        /// <summary>
+        /// Gets all the managers of the specified department from database
+        /// </summary>
+        /// <param name="deptId">Department ID</param>
+        /// <returns>Managers</returns>
         public List<Employee> GetManagers(int deptId)
         {
             try

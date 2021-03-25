@@ -35,7 +35,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ManagerId" class="control-label"></label>
-                <select asp-for="ManagerId" class="form-control" asp-items="ViewBag.ManagerId"> 
+                <select asp-for="ManagerId" class="form-control" asp-items="ViewBag.ManagerId">
                     <option value="0" selected disabled> Select</option>
                 </select>
             </div>
@@ -65,12 +65,12 @@
     <script type="text/javascript">
         $(function () {
             $("#DepartmentId").change(function () {
-                var deptId = $(this).val();
+                var deptId = $(this).val().toString();
                 var url = "/Employees/GetManagers";
                 $.ajax({
                     type: "GET",
                     url: url,
-                    data: "deptId=" + deptId,
+                    data: 'deptId=' + deptId,
                     success: function (data) {
                         var s = '';
                         s += '<option value="0" selected disabled> Select</option>';

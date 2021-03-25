@@ -28,7 +28,7 @@ namespace HRM.Web.Middlewares
             {
                 watch.Stop();
                 var responseTimeForCompleteRequest = watch.ElapsedMilliseconds;
-                context.Response.Headers[ResponseHeader] = responseTimeForCompleteRequest.ToString();
+                //context.Response.Headers[ResponseHeader] = responseTimeForCompleteRequest.ToString();
                 _logger.LogInformation("Response Time: " + responseTimeForCompleteRequest);
                 return Task.CompletedTask;
             });

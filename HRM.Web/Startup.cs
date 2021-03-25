@@ -29,8 +29,8 @@ namespace HRM.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddResponseCaching();
             services.AddMvc();
+            services.AddResponseCaching();
             services.AddControllersWithViews();
             services.AddScoped<IEmployeeManager, EmployeeManager>();
             services.AddScoped<IDepartmentManager, DepartmentManager>();
@@ -70,15 +70,18 @@ namespace HRM.Web
 
             app.Use(async (context, next) =>
             {
-                context.Response.GetTypedHeaders().CacheControl =
-                    new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
-                    {
-                        Public = true,
-                        MaxAge = TimeSpan.FromMilliseconds(500)
-                    };
-                context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] =
-                    new string[] { "Accept-Encoding" };
-
+                var path = context.Request.Path.Value;
+                if (path == "/Employee" || path == "/Employee/Index")
+                {
+                    context.Response.GetTypedHeaders().CacheControl =
+                        new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+                        {
+                            Public = true,
+                            MaxAge = TimeSpan.FromMilliseconds(500)
+                        };
+                    context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] =
+                        new string[] { "Accept-Encoding" };
+                }
                 await next();
             });
 

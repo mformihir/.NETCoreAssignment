@@ -25,12 +25,20 @@ namespace HRM.Web.Controllers
             _departmentManager = departmentManager;
         }
 
+        /// <summary>
+        /// Renders a List of all the Employees
+        /// </summary>
         public IActionResult Index()
         {
             var employees = _employeeManager.GetEmployees();
             return View(employees);
         }
 
+        /// <summary>
+        /// Renders Employee Detail page
+        /// </summary>
+        /// <param name="id">ID of Employee</param>
+        /// <returns></returns>
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -48,12 +56,22 @@ namespace HRM.Web.Controllers
             return View(employee);
         }
 
+        /// <summary>
+        /// Renders the Employee Create Page
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
         public IActionResult Create()
         {
             ViewData["DepartmentId"] = new SelectList(_departmentManager.GetDepartments(), "Id", "Name");
             return View();
         }
 
+        /// <summary>
+        /// Creates the Employee and Redirects to Employee List
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Name,DepartmentId,Salary,IsManager,ManagerId,Phone,Email")] EmployeeBusinessModel employee)
@@ -71,12 +89,23 @@ namespace HRM.Web.Controllers
             return View(employee);
         }
 
+        /// <summary>
+        /// Gets the managers of the specified ID from Database (used for Dropdown)
+        /// </summary>
+        /// <param name="deptId">Department ID of managers</param>
+        /// <returns></returns>
         [AllowAnonymous]
+        [HttpGet]
         public JsonResult GetManagers(int deptId)
         {
             return Json(_employeeManager.GetManagers(deptId));
         }
 
+        /// <summary>
+        /// Renders Employee Edit View
+        /// </summary>
+        /// <param name="id">ID of Employee</param>
+        /// <returns></returns>
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -96,6 +125,12 @@ namespace HRM.Web.Controllers
             return View(employee);
         }
 
+        /// <summary>
+        /// Updates the Employee into the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("Id,Name,DepartmentId,Salary,IsManager,ManagerId,Phone,Email")] EmployeeBusinessModel employee)
@@ -116,6 +151,11 @@ namespace HRM.Web.Controllers
             return View(employee);
         }
 
+        /// <summary>
+        /// Deletes the specified Employee from Database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult Delete(int? id)
         {
             if (id == null)
