@@ -47,8 +47,8 @@ namespace HRM.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddFile($"Logs/log.txt");
-            app.UseMeasureResponseMiddleware();
+            loggerFactory.AddFile($"Logs/log.txt"); //Error logging in log file
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -65,6 +65,10 @@ namespace HRM.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            //Custom Middlewares 
+            app.UseMeasureResponseMiddleware();
+            app.UseCustomExceptionHandlingMiddleware();
 
             app.UseResponseCaching();
 
