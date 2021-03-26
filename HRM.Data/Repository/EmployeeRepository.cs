@@ -6,8 +6,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRM.Data.Repository
 {
@@ -67,7 +65,7 @@ namespace HRM.Data.Repository
                 }
                 employeeFromDb.DepartmentId = employee.DepartmentId;
                 employeeFromDb.UpdatedDate = DateTime.UtcNow;
-                employeeFromDb.UpdatedBy = 1; //TODO: Get loggedInUserId for employee.CreatedBy
+                //employeeFromDb.UpdatedBy = 1; //TODO: Get loggedInUserId for employee.CreatedBy
 
                 _context.Entry(employeeFromDb).State = EntityState.Modified;
                 _context.SaveChanges();

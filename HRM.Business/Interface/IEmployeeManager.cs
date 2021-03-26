@@ -1,7 +1,5 @@
 ﻿using HRM.Business.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HRM.Business.Interface
 {
@@ -9,9 +7,9 @@ namespace HRM.Business.Interface
     {
         EmployeeBusinessModel GetEmployee(int id);
         List<EmployeeBusinessModel> GetEmployees();
-        string CreateEmployee(EmployeeBusinessModel employee);
+        string CreateEmployee(EmployeeBusinessModel employee, string loggedInUserId);
         Dictionary<int, string> GetManagers(int deptId);
-        string UpdateEmployee(int id, EmployeeBusinessModel employee);
+        string UpdateEmployee(int id, EmployeeBusinessModel employee, string loggedInUserId);
         string DeleteEmployee(int id);
     }
 }

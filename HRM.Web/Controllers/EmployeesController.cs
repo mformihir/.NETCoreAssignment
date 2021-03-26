@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using HRM.Data.Context;
-using HRM.Data.Models;
 using HRM.Business.Interface;
 using HRM.Business.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace HRM.Web.Controllers
 {
@@ -18,11 +13,13 @@ namespace HRM.Web.Controllers
     {
         private readonly IEmployeeManager _employeeManager;
         private readonly IDepartmentManager _departmentManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public EmployeesController(IEmployeeManager employeeManager, IDepartmentManager departmentManager)
+        public EmployeesController(IEmployeeManager employeeManager, IDepartmentManager departmentManager, UserManager<IdentityUser> userManager)
         {
             _employeeManager = employeeManager;
             _departmentManager = departmentManager;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -78,7 +75,8 @@ namespace HRM.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = _employeeManager.CreateEmployee(employee);
+                var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var result = _employeeManager.CreateEmployee(employee, loggedInUserId);
                 if (result == "Success")
                 {
                     return RedirectToAction(nameof(Index));
@@ -142,7 +140,8 @@ namespace HRM.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = _employeeManager.UpdateEmployee(id, employee);
+                var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var result = _employeeManager.UpdateEmployee(id, employee, loggedInUserId);
                 return RedirectToAction(nameof(Index));
             }
 

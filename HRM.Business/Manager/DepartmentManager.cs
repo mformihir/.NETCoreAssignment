@@ -1,31 +1,30 @@
-﻿using HRM.Business.Interface;
+﻿using AutoMapper;
+using HRM.Business.Interface;
 using HRM.Business.Models;
 using HRM.Data.Interface;
 using HRM.Data.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HRM.Business.Manager
 {
     public class DepartmentManager : IDepartmentManager
     {
         private readonly IDepartmentRepository _departmentRepository;
-        public DepartmentManager(IDepartmentRepository departmentRepository)
+        private IMapper mapper;
+        public DepartmentManager(IDepartmentRepository departmentRepository, IMapper mapper)
         {
             _departmentRepository = departmentRepository;
+            this.mapper = mapper;
         }
+
+        /// <summary>
+        /// Fetches all the departments from repository and maps with Business Model
+        /// </summary>
+        /// <returns></returns>
         public List<DepartmentBusinessModel> GetDepartments()
         {
             var departmentsFromDb = _departmentRepository.GetDepartments();
-            var departments = new List<DepartmentBusinessModel>();
-            foreach (var item in departmentsFromDb)
-            {
-                var dept = new DepartmentBusinessModel();
-                dept.Id = item.Id;
-                dept.Name = item.Name;
-                departments.Add(dept);
-            }
+            var departments = mapper.Map<List<DepartmentBusinessModel>>(departmentsFromDb);
             return departments;
         }
 
@@ -36,8 +35,7 @@ namespace HRM.Business.Manager
         /// <returns>Create operation status (string)</returns>
         public string CreateDepartment(DepartmentBusinessModel departmentViewModel)
         {
-            var departmentToDb = new Department();
-            departmentToDb.Name = departmentViewModel.Name;
+            var departmentToDb = mapper.Map<Department>(departmentViewModel);
             return _departmentRepository.CreateDepartment(departmentToDb);
         }
     }

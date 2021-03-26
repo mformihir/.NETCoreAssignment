@@ -1,5 +1,3 @@
-using System;
-
 namespace HRM.Web.Models
 {
     public class ErrorViewModel

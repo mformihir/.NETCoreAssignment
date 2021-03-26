@@ -1,11 +1,9 @@
-﻿using HRM.Data;
+﻿using HRM.Business.Automapper;
+using HRM.Data;
 using HRM.Data.Interface;
 using HRM.Data.Repository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HRM.Business
 {
@@ -14,6 +12,7 @@ namespace HRM.Business
         public static IServiceCollection RegisterBusinessServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.RegisterDataServices(configuration);
+            services.AddAutoMapper(typeof(MappingProfiles));
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             return services;

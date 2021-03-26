@@ -22,12 +22,14 @@ namespace HRM.Data.Models
         public string Email { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
-        public int CreatedBy { get; set; }
-        public int? UpdatedBy { get; set; }
+        public string CreatedBy { get; set; }
+        public string UpdatedBy { get; set; }
         public bool IsActive { get; set; }
 
+        public virtual AspNetUser CreatedByNavigation { get; set; }
         public virtual Department Department { get; set; }
         public virtual Employee Manager { get; set; }
+        public virtual AspNetUser UpdatedByNavigation { get; set; }
         public virtual ICollection<Employee> InverseManager { get; set; }
     }
 }
