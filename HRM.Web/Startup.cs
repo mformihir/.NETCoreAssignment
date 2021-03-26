@@ -1,3 +1,4 @@
+using AspNetCoreHero.ToastNotification;
 using HRM.Business;
 using HRM.Business.Interface;
 using HRM.Business.Manager;
@@ -38,6 +39,8 @@ namespace HRM.Web
                 options.LoginPath = "/Identity/Account/Login";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
+
+            services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

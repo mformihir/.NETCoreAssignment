@@ -5,6 +5,7 @@ using HRM.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace HRM.Web.Controllers
 {
@@ -14,12 +15,14 @@ namespace HRM.Web.Controllers
         private readonly IEmployeeManager _employeeManager;
         private readonly IDepartmentManager _departmentManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly INotyfService _notyf;
 
-        public EmployeesController(IEmployeeManager employeeManager, IDepartmentManager departmentManager, UserManager<IdentityUser> userManager)
+        public EmployeesController(IEmployeeManager employeeManager, IDepartmentManager departmentManager, UserManager<IdentityUser> userManager, INotyfService notyf)
         {
             _employeeManager = employeeManager;
             _departmentManager = departmentManager;
             _userManager = userManager;
+            _notyf = notyf;
         }
 
         /// <summary>
@@ -79,9 +82,14 @@ namespace HRM.Web.Controllers
                 var result = _employeeManager.CreateEmployee(employee, loggedInUserId);
                 if (result == "Success")
                 {
+                    _notyf.Success("Success");
                     return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction("Error", "Home");
+                else
+                {
+                    _notyf.Error(result);
+                    return RedirectToAction("Error", "Home");
+                }
             }
             ViewData["DepartmentId"] = new SelectList(_departmentManager.GetDepartments(), "Id", "Name", employee.DepartmentId);
             return View(employee);
@@ -142,7 +150,16 @@ namespace HRM.Web.Controllers
             {
                 var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var result = _employeeManager.UpdateEmployee(id, employee, loggedInUserId);
-                return RedirectToAction(nameof(Index));
+                if (result == "Success")
+                {
+                    _notyf.Success(result);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    _notyf.Error(result);
+                    return RedirectToAction("Error", "Home");
+                }
             }
 
             ViewBag.DepartmentId = new SelectList(_departmentManager.GetDepartments(), "Id", "Name", employee.DepartmentId);
@@ -169,6 +186,7 @@ namespace HRM.Web.Controllers
                 return NotFound();
             }
 
+            _notyf.Success(result);
             return RedirectToAction(nameof(Index));
         }
     }
