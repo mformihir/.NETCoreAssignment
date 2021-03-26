@@ -12,7 +12,7 @@ namespace HRM.Business.Models
 
         [Required]
         [StringLength(50)]
-        [RegularExpression("^[a-zA-Z\\s*]+$", ErrorMessage = "Only alphabets are allowed")]
+        [RegularExpression("^[a-zA-Z\\s*]+$", ErrorMessage = "Only alphabets are allowed. Length should be 50 (max).")]
         public string Name { get; set; }
 
         public string Department { get; set; }

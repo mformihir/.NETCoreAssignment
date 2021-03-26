@@ -37,7 +37,7 @@ namespace HRM.Data.Repository
             }
             catch (Exception e)
             {
-                _logger.LogCritical(e.Message);
+                _logger.LogCritical(e.Message, e.StackTrace);
                 return "Error Occurred";
             }
         }
@@ -75,7 +75,7 @@ namespace HRM.Data.Repository
             }
             catch (Exception e)
             {
-                _logger.LogCritical(e.Message);
+                _logger.LogCritical(e.Message, e.StackTrace);
                 return "Error occurred";
             }
         }
@@ -100,7 +100,7 @@ namespace HRM.Data.Repository
             }
             catch (Exception e)
             {
-                _logger.LogCritical(e.Message);
+                _logger.LogCritical(e.Message, e.StackTrace);
                 return "Error occured";
             }
         }
@@ -118,7 +118,7 @@ namespace HRM.Data.Repository
             }
             catch (Exception e)
             {
-                _logger.LogCritical(e.Message);
+                _logger.LogCritical(e.Message, e.StackTrace);
                 return null;
             }
         }
@@ -136,7 +136,7 @@ namespace HRM.Data.Repository
             }
             catch (Exception e)
             {
-                _logger.LogCritical(e.Message);
+                _logger.LogCritical(e.Message, e.StackTrace);
                 return null;
             }
         }
@@ -155,7 +155,7 @@ namespace HRM.Data.Repository
             }
             catch (Exception e)
             {
-                _logger.LogCritical(e.Message);
+                _logger.LogCritical(e.Message, e.StackTrace);
                 return null;
             }
         }

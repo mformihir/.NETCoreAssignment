@@ -1,6 +1,7 @@
 ﻿using HRM.Business.Interface;
 using HRM.Business.Models;
 using HRM.Data.Interface;
+using HRM.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,6 +27,18 @@ namespace HRM.Business.Manager
                 departments.Add(dept);
             }
             return departments;
+        }
+
+        /// <summary>
+        /// Maps the DepartmentBusinessModel to Department, fills the necessary attributes and calls repository
+        /// </summary>
+        /// <param name="departmentViewModel">Department to be created</param>
+        /// <returns>Create operation status (string)</returns>
+        public string CreateDepartment(DepartmentBusinessModel departmentViewModel)
+        {
+            var departmentToDb = new Department();
+            departmentToDb.Name = departmentViewModel.Name;
+            return _departmentRepository.CreateDepartment(departmentToDb);
         }
     }
 }
