@@ -65,7 +65,7 @@ namespace HRM.Data.Repository
                 }
                 employeeFromDb.DepartmentId = employee.DepartmentId;
                 employeeFromDb.UpdatedDate = DateTime.UtcNow;
-                //employeeFromDb.UpdatedBy = 1; //TODO: Get loggedInUserId for employee.CreatedBy
+                employeeFromDb.UpdatedBy = employee.UpdatedBy;
 
                 _context.Entry(employeeFromDb).State = EntityState.Modified;
                 _context.SaveChanges();

@@ -29,8 +29,10 @@ namespace HRM.Web
             services.AddMvc();
             services.AddResponseCaching();
             services.AddControllersWithViews();
+
             services.AddScoped<IEmployeeManager, EmployeeManager>();
             services.AddScoped<IDepartmentManager, DepartmentManager>();
+
             services.RegisterBusinessServices(Configuration);
 
             services.ConfigureApplicationCookie(options =>
@@ -40,6 +42,7 @@ namespace HRM.Web
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
 
+            // Toast Notifications
             services.AddNotyf(config => { config.DurationInSeconds = 10; config.IsDismissable = true; config.Position = NotyfPosition.BottomRight; });
         }
 
@@ -65,12 +68,13 @@ namespace HRM.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //Custom Middlewares 
+            // Custom Middlewares 
             app.UseMeasureResponseMiddleware();
             app.UseCustomExceptionHandlingMiddleware();
 
             app.UseResponseCaching();
 
+            // Employee List Response Caching
             app.Use(async (context, next) =>
             {
                 var path = context.Request.Path.Value;
@@ -88,6 +92,7 @@ namespace HRM.Web
                 await next();
             });
 
+            // Custom Header 
             app.Use(async (context, next) =>
             {
                 context.Response.Headers.Add("X-Username", "Mihir Joshi");

@@ -7,8 +7,6 @@ namespace HRM.Web.Middlewares
 {
     public class MeasureResponseTimeMiddleware
     {
-        private const string ResponseHeader = "X-Response-Time-ms";
-
         private readonly RequestDelegate _next;
         private readonly ILogger<MeasureResponseTimeMiddleware> _logger;
         public MeasureResponseTimeMiddleware(RequestDelegate next, ILogger<MeasureResponseTimeMiddleware> logger)

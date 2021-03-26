@@ -50,7 +50,7 @@ namespace HRM.Business.Manager
                 employeeToDb.ManagerId = null;
             }
             employeeToDb.UpdatedDate = DateTime.UtcNow;
-            employeeToDb.CreatedBy = loggedInUserId;
+            employeeToDb.UpdatedBy = loggedInUserId;
             return _employeeRepository.UpdateEmployee(employeeToDb);
         }
 
