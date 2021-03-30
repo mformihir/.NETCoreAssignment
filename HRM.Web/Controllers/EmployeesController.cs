@@ -87,7 +87,7 @@ namespace HRM.Web.Controllers
                 }
                 else
                 {
-                    _notyf.Error(result);
+                    _notyf.Custom(result, 5, "#DFC52C", "fa fa-exclamation-triangle");
                     return RedirectToAction("Error", "Home");
                 }
             }
@@ -157,7 +157,7 @@ namespace HRM.Web.Controllers
                 }
                 else
                 {
-                    _notyf.Error(result);
+                    _notyf.Custom(result, 5, "#DFC52C", "fa fa-exclamation-triangle");
                     return RedirectToAction("Error", "Home");
                 }
             }
@@ -183,10 +183,17 @@ namespace HRM.Web.Controllers
 
             if (result == "Not found")
             {
+                _notyf.Custom(result, 5, "#DFC52C", "fa fa-exclamation-triangle");
                 return NotFound();
             }
-
-            _notyf.Success(result);
+            else if (result == "Success")
+            {
+                _notyf.Success(result);
+            }
+            else
+            {
+                _notyf.Custom(result, 5, "#DFC52C", "fa fa-exclamation-triangle");
+            }
             return RedirectToAction(nameof(Index));
         }
     }

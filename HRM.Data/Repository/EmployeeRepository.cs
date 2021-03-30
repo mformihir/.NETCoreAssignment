@@ -92,6 +92,10 @@ namespace HRM.Data.Repository
             }
             try
             {
+                if (_context.Employees.Where(e => e.ManagerId == employeeFromDb.Id).Any())
+                {
+                    return "Can't remove a manager when it's assigned to one or more employees.";
+                }
                 _context.Remove(employeeFromDb);
                 _context.SaveChanges();
                 return "Success";

@@ -23,8 +23,4 @@
     <ProjectReference Include="..\HRM.Business\HRM.Business.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Automapper\" />
-  </ItemGroup>
-
 </Project>

@@ -8,5 +8,11 @@ namespace HRM.Business.Interface
         List<DepartmentBusinessModel> GetDepartments();
 
         string CreateDepartment(DepartmentBusinessModel departmentViewModel);
+
+        DepartmentBusinessModel GetDepartment(int id);
+
+        string UpdateDepartment(int id, DepartmentBusinessModel departmentViewModel, string loggedInUserId);
+
+        string DeleteDepartment(int id);
     }
 }

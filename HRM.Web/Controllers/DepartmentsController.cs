@@ -1,15 +1,22 @@
-﻿using HRM.Business.Interface;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using HRM.Business.Interface;
 using HRM.Business.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HRM.Web.Controllers
 {
     public class DepartmentsController : Controller
     {
         private readonly IDepartmentManager _departmentManager;
-        public DepartmentsController(IDepartmentManager departmentManager)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly INotyfService _notyf;
+        public DepartmentsController(IDepartmentManager departmentManager, UserManager<IdentityUser> userManager, INotyfService notyf)
         {
             _departmentManager = departmentManager;
+            _userManager = userManager;
+            _notyf = notyf;
         }
 
         /// <summary>
@@ -32,9 +39,9 @@ namespace HRM.Web.Controllers
         }
 
         /// <summary>
-        /// Creates the Department and Redirects to Employee List
+        /// Creates the Department and Redirects to Department List
         /// </summary>
-        /// <param name="employee"></param>
+        /// <param name="department"></param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -45,11 +52,127 @@ namespace HRM.Web.Controllers
                 var result = _departmentManager.CreateDepartment(department);
                 if (result == "Success")
                 {
+                    _notyf.Success("Success");
                     return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction("Error", "Home");
+                else
+                {
+                    _notyf.Custom(result, 5, "#DFC52C", "fa fa-exclamation-triangle");
+                    return RedirectToAction("Error", "Home");
+                }
             }
             return View(department);
         }
+
+        /// <summary>
+        /// Renders Department Detail page
+        /// </summary>
+        /// <param name="id">ID of Department</param>
+        /// <returns></returns>
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var department = _departmentManager.GetDepartment((int)id);
+
+            if (department == null)
+            {
+                return NotFound();
+            }
+
+            return View(department);
+        }
+
+        /// <summary>
+        /// Renders Department Edit View
+        /// </summary>
+        /// <param name="id">ID of Department</param>
+        /// <returns></returns>
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var department = _departmentManager.GetDepartment((int)id);
+
+            if (department == null)
+            {
+                return NotFound();
+            }
+
+            return View(department);
+        }
+
+
+        /// <summary>
+        /// Updates the Department into the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, [Bind("Id,Name")] DepartmentBusinessModel department)
+        {
+            if (id != department.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var result = _departmentManager.UpdateDepartment(id, department, loggedInUserId);
+                if (result == "Success")
+                {
+                    _notyf.Success(result);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    _notyf.Custom(result, 5, "red", "fa fa-gear");
+                    //_notyf.Error(result);
+                    return RedirectToAction("Error", "Home");
+                }
+            }
+
+            return View(department);
+        }
+
+        /// <summary>
+        /// Deletes the specified Department from Database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var result = _departmentManager.DeleteDepartment((int)id);
+
+            if (result == "Not found")
+            {
+                _notyf.Error(result);
+                return NotFound();
+            }
+            else if (result == "Success")
+            {
+                _notyf.Success(result);
+            }
+            else
+            {
+                _notyf.Custom(result, 5, "whitesmoke", "fa fa-gear");
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
