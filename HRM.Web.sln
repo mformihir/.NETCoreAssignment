@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRM.Business", "HRM.Busines
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRM.Data", "HRM.Data\HRM.Data.csproj", "{31ECFDB5-C583-4833-8C43-325BD1D6866A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRM.Web.Tests", "HRM.Web.Tests\HRM.Web.Tests.csproj", "{C4091293-C97A-4DDD-A17F-E0B0B6088196}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{31ECFDB5-C583-4833-8C43-325BD1D6866A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31ECFDB5-C583-4833-8C43-325BD1D6866A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31ECFDB5-C583-4833-8C43-325BD1D6866A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4091293-C97A-4DDD-A17F-E0B0B6088196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4091293-C97A-4DDD-A17F-E0B0B6088196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4091293-C97A-4DDD-A17F-E0B0B6088196}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4091293-C97A-4DDD-A17F-E0B0B6088196}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
